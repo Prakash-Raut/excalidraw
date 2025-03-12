@@ -1,12 +1,13 @@
+import {
+	createUserSchema,
+	querySchema,
+	updateUserSchema,
+} from "@workspace/common";
 import type { NextFunction, Request, Response } from "express";
 import createHttpError from "http-errors";
 import type { Logger } from "winston";
 import type { UserService } from "../services/UserService";
-import type {
-	CreateUserRequest,
-	UpdateUserRequest,
-	UserQueryParams,
-} from "../types";
+import type { CreateUserRequest, UpdateUserRequest } from "../types";
 
 export class UserController {
 	constructor(
@@ -19,12 +20,13 @@ export class UserController {
 		res: Response,
 		next: NextFunction,
 	) => {
-		// const result = validationResult(req);
-		// if (!result.isEmpty()) {
-		// 	return next(createHttpError(400, result.array()[0].msg as string));
-		// }
+		const { error, data, success } = createUserSchema.safeParse(req.body);
 
-		const { firstName, lastName, email, password } = req.body;
+		if (!success) {
+			return next(createHttpError(400, error.message));
+		}
+
+		const { firstName, lastName, email, password } = data;
 
 		this.logger.debug("Request for creating a user", req.body);
 
@@ -45,23 +47,36 @@ export class UserController {
 	};
 
 	getAll = async (req: Request, res: Response, next: NextFunction) => {
-		// const validatedQuery = matchedData(req, { onlyValidData: true });
-		// try {
-		// 	const [users, count] = await this.userService.getAll(
-		// 		validatedQuery as UserQueryParams
-		// 	);
-		// 	this.logger.info("All Users have been fetched", {
-		// 		count,
-		// 	});
-		// 	res.json({
-		// 		currentPage: validatedQuery.currentPage as number,
-		// 		perPage: validatedQuery.perPage as number,
-		// 		total: count,
-		// 		data: users,
-		// 	});
-		// } catch (error) {
-		// 	next(error);
-		// }
+		const { error, data, success } = querySchema.safeParse(req.query);
+
+		if (!success) {
+			return next(createHttpError(400, error.message));
+		}
+
+		this.logger.debug("Request for fetching all users", req.query);
+
+		const { q, currentPage, perPage } = data;
+
+		try {
+			const { users, totalUsers } = await this.userService.getAll({
+				q,
+				currentPage,
+				perPage,
+			});
+
+			this.logger.info("All Users have been fetched", {
+				count: totalUsers,
+			});
+
+			res.json({
+				currentPage: currentPage,
+				perPage: perPage,
+				total: totalUsers,
+				data: users,
+			});
+		} catch (error) {
+			next(error);
+		}
 	};
 
 	getOne = async (req: Request, res: Response, next: NextFunction) => {
@@ -92,13 +107,14 @@ export class UserController {
 		res: Response,
 		next: NextFunction,
 	) => {
-		// const result = validationResult(req);
-		// if (!result.isEmpty()) {
-		// 	next(createHttpError(400, result.array()[0].msg as string));
-		// }
+		const { error, data, success } = updateUserSchema.safeParse(req.body);
+
+		if (!success) {
+			return next(createHttpError(400, error.message));
+		}
 
 		const userId = req.params.id;
-		const { firstName, lastName, email } = req.body;
+		const { firstName, lastName, email } = data;
 
 		this.logger.debug("Request for updating a user", req.body);
 

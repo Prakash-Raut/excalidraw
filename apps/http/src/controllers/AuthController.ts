@@ -1,3 +1,4 @@
+import { loginUserSchema, registerUserSchema } from "@workspace/common";
 import type { NextFunction, Request, Response } from "express";
 import createHttpError from "http-errors";
 import type { JwtPayload } from "jsonwebtoken";
@@ -23,13 +24,13 @@ export class AuthController {
 		res: Response,
 		next: NextFunction,
 	) => {
-		// const result = validationResult(req);
+		const { error, data, success } = registerUserSchema.safeParse(req.body);
 
-		// if (!result.isEmpty()) {
-		// 	return next(createHttpError(400, result.array()[0].msg as string));
-		// }
+		if (!success) {
+			return next(createHttpError(400, error.message));
+		}
 
-		const { firstName, lastName, email, password } = req.body;
+		const { firstName, lastName, email, password } = data;
 
 		this.logger.debug("New Request to register user", {
 			firstName,
@@ -93,13 +94,13 @@ export class AuthController {
 		res: Response,
 		next: NextFunction,
 	) => {
-		// const result = validationResult(req);
+		const { error, data, success } = loginUserSchema.safeParse(req.body);
 
-		// if (!result.isEmpty()) {
-		// 	return next(createHttpError(400, result.array()[0].msg as string));
-		// }
+		if (!success) {
+			return next(createHttpError(400, error.message));
+		}
 
-		const { email, password } = req.body;
+		const { email, password } = data;
 
 		this.logger.debug("New Request to login user", {
 			email,
