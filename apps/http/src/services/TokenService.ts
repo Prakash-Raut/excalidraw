@@ -1,11 +1,11 @@
 import fs from "node:fs";
 import path from "node:path";
 
+import { Config } from "@workspace/common";
 import type { User } from "@workspace/database";
 import { prisma } from "@workspace/database";
 import createHttpError from "http-errors";
 import { type JwtPayload, sign } from "jsonwebtoken";
-import { Config } from "../config/env";
 
 export class TokenService {
 	constructor(private prismaClient = prisma) {}

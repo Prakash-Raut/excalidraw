@@ -1,15 +1,17 @@
-import { loginUserSchema, registerUserSchema } from "@workspace/common";
+import type {
+	AuthRequest,
+	Logger,
+	RegisterUserRequest,
+} from "@workspace/common";
+import { Config } from "@workspace/common";
 import type { NextFunction, Request, Response } from "express";
 import createHttpError from "http-errors";
 import type { JwtPayload } from "jsonwebtoken";
 import { v4 as uuid } from "uuid";
-import type { Logger } from "winston";
-import { Config } from "../config/env";
 import { GOOGLE_OAUTH_SCOPES } from "../constants";
 import type { CredentialService } from "../services/CredentialService";
 import type { TokenService } from "../services/TokenService";
 import type { UserService } from "../services/UserService";
-import type { AuthRequest, RegisterUserRequest } from "../types";
 
 export class AuthController {
 	constructor(
@@ -24,13 +26,7 @@ export class AuthController {
 		res: Response,
 		next: NextFunction,
 	) => {
-		const { error, data, success } = registerUserSchema.safeParse(req.body);
-
-		if (!success) {
-			return next(createHttpError(400, error.message));
-		}
-
-		const { firstName, lastName, email, password } = data;
+		const { firstName, lastName, email, password } = req.body;
 
 		this.logger.debug("New Request to register user", {
 			firstName,
@@ -94,13 +90,7 @@ export class AuthController {
 		res: Response,
 		next: NextFunction,
 	) => {
-		const { error, data, success } = loginUserSchema.safeParse(req.body);
-
-		if (!success) {
-			return next(createHttpError(400, error.message));
-		}
-
-		const { email, password } = data;
+		const { email, password } = req.body;
 
 		this.logger.debug("New Request to login user", {
 			email,

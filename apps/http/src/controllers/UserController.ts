@@ -1,13 +1,12 @@
-import {
-	createUserSchema,
-	querySchema,
-	updateUserSchema,
+import type {
+	CreateUserRequest,
+	Logger,
+	UpdateUserRequest,
 } from "@workspace/common";
+import { querySchema } from "@workspace/common";
 import type { NextFunction, Request, Response } from "express";
 import createHttpError from "http-errors";
-import type { Logger } from "winston";
 import type { UserService } from "../services/UserService";
-import type { CreateUserRequest, UpdateUserRequest } from "../types";
 
 export class UserController {
 	constructor(
@@ -20,13 +19,7 @@ export class UserController {
 		res: Response,
 		next: NextFunction,
 	) => {
-		const { error, data, success } = createUserSchema.safeParse(req.body);
-
-		if (!success) {
-			return next(createHttpError(400, error.message));
-		}
-
-		const { firstName, lastName, email, password } = data;
+		const { firstName, lastName, email, password } = req.body;
 
 		this.logger.debug("Request for creating a user", req.body);
 
@@ -107,14 +100,8 @@ export class UserController {
 		res: Response,
 		next: NextFunction,
 	) => {
-		const { error, data, success } = updateUserSchema.safeParse(req.body);
-
-		if (!success) {
-			return next(createHttpError(400, error.message));
-		}
-
 		const userId = req.params.id;
-		const { firstName, lastName, email } = data;
+		const { firstName, lastName, email } = req.body;
 
 		this.logger.debug("Request for updating a user", req.body);
 

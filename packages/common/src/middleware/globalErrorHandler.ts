@@ -1,14 +1,13 @@
-import type { NextFunction, Request, Response } from "express";
+import type { Request, Response } from "express";
 import type { HttpError } from "http-errors";
 import { v4 as uuidv4 } from "uuid";
 import { Config } from "../config/env";
-import logger from "../config/logger";
+import { logger } from "../config/logger";
 
 export const globalErrorHandler = (
 	err: HttpError,
 	req: Request,
 	res: Response,
-	next: NextFunction,
 ) => {
 	const errorId = uuidv4();
 	const statusCode = err.statusCode || err.status || 500;

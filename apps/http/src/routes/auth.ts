@@ -1,3 +1,11 @@
+import type { AuthRequest } from "@workspace/common";
+import {
+	authenticate,
+	logger,
+	loginUserSchema,
+	registerUserSchema,
+	validateRequest,
+} from "@workspace/common";
 import { prisma } from "@workspace/database";
 import {
 	type NextFunction,
@@ -5,17 +13,12 @@ import {
 	type Response,
 	Router,
 } from "express";
-import logger from "../config/logger";
 import { AuthController } from "../controllers/AuthController";
-import authenticate from "../middleware/authenticate";
-import parseRefreshToken from "../middleware/parseRefreshToken";
-import validateRefreshToken from "../middleware/validateRefreshToken";
+import { parseRefreshToken } from "../middleware/parseRefreshToken";
+import { validateRefreshToken } from "../middleware/validateRefreshToken";
 import { CredentialService } from "../services/CredentialService";
 import { TokenService } from "../services/TokenService";
 import { UserService } from "../services/UserService";
-import type { AuthRequest } from "../types";
-import loginValidator from "../validators/login-validator";
-import registerValidator from "../validators/register-validator";
 
 const router: Router = Router();
 
@@ -31,7 +34,7 @@ const authController = new AuthController(
 
 router.post(
 	"/register",
-	registerValidator,
+	validateRequest(registerUserSchema),
 	async (req: Request, res: Response, next: NextFunction) => {
 		await authController.register(req, res, next);
 	},
@@ -39,7 +42,7 @@ router.post(
 
 router.post(
 	"/login",
-	loginValidator,
+	validateRequest(loginUserSchema),
 	async (req: Request, res: Response, next: NextFunction) => {
 		await authController.login(req, res, next);
 	},

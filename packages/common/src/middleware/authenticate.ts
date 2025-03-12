@@ -1,4 +1,4 @@
-import type { Request } from "express";
+import type { Request, RequestHandler } from "express";
 import { type GetVerificationKey, expressjwt } from "express-jwt";
 import type { Jwt } from "jsonwebtoken";
 import jwksClient, { type SigningKey } from "jwks-rsa";
@@ -46,7 +46,7 @@ const getTokenFromHeaderOrQuerystring = (req: Request) => {
 	return accessToken;
 };
 
-export default expressjwt({
+export const authenticate: RequestHandler = expressjwt({
 	secret: getKey,
 	algorithms: ["RS256"],
 	getToken: getTokenFromHeaderOrQuerystring,

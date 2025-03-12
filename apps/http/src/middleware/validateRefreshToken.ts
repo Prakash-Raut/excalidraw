@@ -1,11 +1,10 @@
+import type { AuthCookie, IRefreshTokenPayload } from "@workspace/common";
+import { Config, logger } from "@workspace/common";
 import { prisma } from "@workspace/database";
 import type { Request } from "express";
 import { expressjwt } from "express-jwt";
-import { Config } from "../config/env";
-import logger from "../config/logger";
-import type { AuthCookie, IRefreshTokenPayload } from "../types";
 
-export default expressjwt({
+export const validateRefreshToken = expressjwt({
 	secret: Config.REFRESH_TOKEN_SECRET as string,
 	algorithms: ["HS256"],
 	getToken: (req: Request) => {

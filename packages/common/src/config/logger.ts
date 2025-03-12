@@ -1,7 +1,7 @@
 import winston from "winston";
 import { Config } from "./env";
 
-const logger = winston.createLogger({
+export const logger = winston.createLogger({
 	level: "info",
 	defaultMeta: {
 		serviceName: "http-backend",
@@ -31,5 +31,3 @@ const logger = winston.createLogger({
 		}),
 	],
 });
-
-export default logger;

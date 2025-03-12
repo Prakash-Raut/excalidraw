@@ -1,3 +1,13 @@
+import {
+	type CreateUserRequest,
+	type UpdateUserRequest,
+	authenticate,
+	createUserSchema,
+	logger,
+	querySchema,
+	updateUserSchema,
+	validateRequest,
+} from "@workspace/common";
 import { prisma } from "@workspace/database";
 import {
 	type NextFunction,
@@ -5,15 +15,8 @@ import {
 	type Response,
 	Router,
 } from "express";
-import logger from "../config/logger";
-import { Roles } from "../constants";
 import { UserController } from "../controllers/UserController";
-import authenticate from "../middleware/authenticate";
 import { UserService } from "../services/UserService";
-import type { CreateUserRequest, UpdateUserRequest } from "../types";
-import createUserValidator from "../validators/create-user-validator";
-import listUserValidator from "../validators/list-user-validator";
-import updateUserValidator from "../validators/update-user-validator";
 
 const router = Router();
 
@@ -23,7 +26,7 @@ const userController = new UserController(userService, logger);
 router.post(
 	"/",
 	authenticate,
-	createUserValidator,
+	validateRequest(createUserSchema),
 	(req: CreateUserRequest, res: Response, next: NextFunction) =>
 		userController.create(req, res, next),
 );
@@ -31,7 +34,7 @@ router.post(
 router.get(
 	"/",
 	authenticate,
-	listUserValidator,
+	validateRequest(querySchema),
 	(req: Request, res: Response, next: NextFunction) =>
 		userController.getAll(req, res, next),
 );
@@ -46,7 +49,7 @@ router.get(
 router.patch(
 	"/:id",
 	authenticate,
-	updateUserValidator,
+	validateRequest(updateUserSchema),
 	(req: UpdateUserRequest, res: Response, next: NextFunction) =>
 		userController.update(req, res, next),
 );

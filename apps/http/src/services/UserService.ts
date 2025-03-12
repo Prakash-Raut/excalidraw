@@ -1,6 +1,10 @@
+import type {
+	LimitedUserData,
+	UserData,
+	UserQueryParams,
+} from "@workspace/common";
 import { prisma } from "@workspace/database";
 import bcrypt from "bcryptjs";
-import type { LimitedUserData, UserData, UserQueryParams } from "../types";
 
 export class UserService {
 	constructor(private prismaClient = prisma) {}

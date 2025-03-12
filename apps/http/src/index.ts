@@ -1,6 +1,5 @@
+import { Config, logger } from "@workspace/common";
 import app from "./app";
-import { Config } from "./config/env";
-import logger from "./config/logger";
 
 const startServer = async () => {
 	const PORT = Config.PORT;

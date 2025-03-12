@@ -1,9 +1,9 @@
+import type { AuthCookie } from "@workspace/common";
+import { Config } from "@workspace/common";
 import type { Request } from "express";
 import { expressjwt } from "express-jwt";
-import { Config } from "../config/env";
-import type { AuthCookie } from "../types";
 
-export default expressjwt({
+export const parseRefreshToken = expressjwt({
 	secret: Config.REFRESH_TOKEN_SECRET as string,
 	algorithms: ["HS256"],
 	getToken: (req: Request) => {
