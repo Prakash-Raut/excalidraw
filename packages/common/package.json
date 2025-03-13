@@ -5,9 +5,8 @@
 		".": "./src/index.ts"
 	},
 	"scripts": {
-		"clean": "rm -rf dist",
-		"build": "pnpm clean && tsc",
-		"watch": "tsc -w"
+		"build": "bunchee",
+		"dev": "bunchee --watch"
 	},
 	"dependencies": {
 		"express": "^4.21.2",
@@ -21,6 +20,7 @@
 		"@types/http-errors": "^2.0.4",
 		"@types/node": "^20",
 		"@workspace/typescript-config": "workspace:*",
+		"bunchee": "^6.4.0",
 		"typescript": "^5.8.2"
 	}
 }

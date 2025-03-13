@@ -1,6 +1,0 @@
-{"level":"info","message":"Database connected successfully","serviceName":"http-backend","timestamp":"2025-03-13T05:13:25.621Z"}
-{"level":"info","message":"Server listening on port","port":5501,"serviceName":"http-backend","timestamp":"2025-03-13T05:13:25.627Z"}
-{"id":"65ea8404-14ca-488b-8c2f-c19dad5eba6b","level":"error","serviceName":"http-backend","statusCode":500,"timestamp":"2025-03-13T05:14:44.216Z"}
-{"id":"d28aac9c-375b-4ace-8c73-422ac5892daf","level":"error","serviceName":"http-backend","statusCode":500,"timestamp":"2025-03-13T05:17:51.176Z"}
-{"level":"info","message":"Database connected successfully","serviceName":"http-backend","timestamp":"2025-03-13T05:18:26.029Z"}
-{"level":"info","message":"Server listening on port","port":5501,"serviceName":"http-backend","timestamp":"2025-03-13T05:18:26.036Z"}
