@@ -14,7 +14,7 @@ export interface RegisterUserRequest extends Request {
 export interface AuthRequest extends Request {
 	auth: {
 		sub: string;
-		id?: string;
+		id?: number;
 		firstName?: string;
 		lastName?: string;
 		email?: string;
@@ -49,4 +49,8 @@ export interface UserQueryParams {
 	currentPage: number;
 	perPage: number;
 	q: string;
+}
+
+export interface RoomData {
+	ownerId: number;
 }

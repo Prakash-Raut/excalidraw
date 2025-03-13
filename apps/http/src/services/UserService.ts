@@ -11,16 +11,15 @@ export class UserService {
 
 	create = async ({ firstName, lastName, email, password }: UserData) => {
 		const hashedPassword = await bcrypt.hash(password, 10);
-
-		const userWithEmailExists = await this.prismaClient.user.findFirst({
-			where: { email },
-		});
-
-		if (userWithEmailExists) {
-			throw new Error("Email already exists");
-		}
-
 		try {
+			const userWithEmailExists = await this.prismaClient.user.findFirst({
+				where: { email },
+			});
+
+			if (userWithEmailExists) {
+				throw new Error("Email already exists");
+			}
+
 			return await this.prismaClient.user.create({
 				data: {
 					firstName,

@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { type Express, type Request, type Response } from "express";
 import authRouter from "./routes/auth";
+import roomRouter from "./routes/room";
 import userRouter from "./routes/user";
 
 const app: Express = express();
@@ -23,6 +24,7 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
+app.use("/rooms", roomRouter);
 
 app.use(globalErrorHandler);
 

@@ -35,7 +35,7 @@ model RefreshToken {
 
 model Room {
   id        Int      @id @default(autoincrement())
-  slug      String   @unique
+  slug      String   @unique @default(uuid())
   adminId   Int
   admin     User     @relation(fields: [adminId], references: [id])
   chats     Chat[] // One-to-Many: A room has multiple chats
