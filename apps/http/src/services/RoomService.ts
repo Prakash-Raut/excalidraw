@@ -1,35 +1,36 @@
-import type { RoomData } from "@workspace/common";
 import { prisma } from "@workspace/database";
 
 export class RoomService {
 	constructor(private prismaClient = prisma) {}
 
-	create = async ({ ownerId }: RoomData) => {
+	create = async () => {
 		try {
-			return await this.prismaClient.room.create({
+			const newRoom = await this.prismaClient.room.create({
 				data: {
-					adminId: ownerId,
+					elements: [],
 				},
 			});
+			return newRoom;
 		} catch (error) {
 			throw new Error("Failed to create room");
 		}
 	};
 
-	getOne = async (slug: string) => {
+	join = async (roomId: string) => {
 		try {
-			return await this.prismaClient.room.findUnique({
-				where: { slug },
+			const room = await this.prismaClient.room.findUnique({
+				where: { id: roomId },
 			});
+			return room;
 		} catch (error) {
 			throw new Error("Failed to fetch room from the database");
 		}
 	};
 
-	delete = async (id: number) => {
+	delete = async (roomId: string) => {
 		try {
 			return await this.prismaClient.room.delete({
-				where: { id },
+				where: { id: roomId },
 			});
 		} catch (error) {
 			throw new Error("Failed to delete room");

@@ -1,74 +1,64 @@
-import { hash } from "bcryptjs";
 import { prisma } from "./client";
-import type { Prisma } from "./client";
 
 async function main() {
-	// Seed Users
-	const DEFAULT_USERS: Prisma.UserCreateInput[] = [
-		{
-			firstName: "Tim",
-			lastName: "Apple",
-			email: "tim@apple.com",
-			password: await hash("tim@123", 10),
-		},
-		{
-			firstName: "Elon",
-			lastName: "Musk",
-			email: "elon@tesla.com",
-			password: await hash("elon@123", 10),
-		},
-	];
-
-	const users = await Promise.all(
-		DEFAULT_USERS.map((user) =>
-			prisma.user.upsert({
-				where: { email: user.email },
-				update: {},
-				create: user,
-			}),
-		),
-	);
-
-	if (users.length === 0) {
-		throw new Error(
-			"❌ No users created. Cannot proceed with room or chat seeding.",
-		);
-	}
-
-	// Seed Rooms (Assign Tim as admin)
-	const DEFAULT_ROOMS = users.map((user) => ({
-		adminId: user.id,
-	}));
-
+	// Seed Rooms (now without names)
 	const rooms = await Promise.all(
-		DEFAULT_ROOMS.map((room) =>
-			prisma.room.create({
-				data: room,
-			}),
-		),
+		Array.from({ length: 3 }).map(() => prisma.room.create({ data: {} })),
 	);
 
 	if (rooms.length === 0) {
-		throw new Error("❌ No rooms created. Cannot proceed with chat seeding.");
+		throw new Error("❌ No rooms created. Cannot proceed.");
 	}
 
-	// ✅ Guarantee a fallback room
+	// ✅ Ensure at least one room exists
 	const fallbackRoomId = rooms[0]?.id;
 	if (!fallbackRoomId) {
 		throw new Error("❌ Failed to retrieve a valid room ID.");
 	}
 
-	// Seed Chats (Each user sends a message in a room)
-	const DEFAULT_CHATS = users.map((user, index) => ({
-		message: `Hello from ${user.firstName}`,
-		userId: user.id,
-		roomId: rooms[index % rooms.length]?.id ?? fallbackRoomId, // Assign chats to available rooms
-	}));
+	// Seed Example Drawings (Assign to rooms)
+	const DEFAULT_DRAWINGS = [
+		{
+			roomId: rooms[0]?.id,
+			elements: [
+				{
+					type: "rectangle",
+					x: 100,
+					y: 100,
+					width: 200,
+					height: 100,
+					color: "blue",
+				},
+				{
+					type: "ellipse",
+					x: 300,
+					y: 200,
+					width: 150,
+					height: 150,
+					color: "red",
+				},
+			],
+		},
+		{
+			roomId: rooms[1]?.id,
+			elements: [
+				{ type: "line", x1: 50, y1: 50, x2: 400, y2: 50, color: "green" },
+				{
+					type: "text",
+					x: 200,
+					y: 150,
+					text: "Welcome to Brainstorming!",
+					fontSize: 20,
+				},
+			],
+		},
+	];
 
 	await Promise.all(
-		DEFAULT_CHATS.map((chat) =>
-			prisma.chat.create({
-				data: chat,
+		DEFAULT_DRAWINGS.map((drawing) =>
+			prisma.room.update({
+				where: { id: drawing.roomId },
+				data: { elements: drawing.elements },
 			}),
 		),
 	);

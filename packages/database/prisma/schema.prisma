@@ -7,49 +7,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        Int            @id @default(autoincrement())
-  firstName String
-  lastName  String
-  email     String         @unique
-  password  String
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
-  tokens    RefreshToken[]
-  rooms     Room[] // One-to-Many: A user can create multiple rooms
-  chats     Chat[] // One-to-Many: A user can send multiple messages
-
-  @@index([email])
-}
-
-model RefreshToken {
-  id        Int      @id @default(autoincrement())
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id])
-  expiresAt DateTime
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([userId])
-}
-
 model Room {
-  id        Int      @id @default(autoincrement())
-  slug      String   @unique @default(uuid())
-  adminId   Int
-  admin     User     @relation(fields: [adminId], references: [id])
-  chats     Chat[] // One-to-Many: A room has multiple chats
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        String    @id @default(uuid())
+  elements  Json      @default("{}") 
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Session   Session[]
 }
 
-model Chat {
-  id        Int      @id @default(autoincrement())
-  message   String
-  roomId    Int
-  userId    Int
-  room      Room     @relation(fields: [roomId], references: [id])
-  user      User     @relation(fields: [userId], references: [id])
+model Session {
+  id        String   @id @default(uuid())
+  roomId    String
+  room      Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  cursor    Json    @default("{}")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
