@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-import { Config } from "@workspace/common";
+import { securityConfig } from "@workspace/common";
 import type { User } from "@workspace/database";
 import { prisma } from "@workspace/database";
 import createHttpError from "http-errors";
@@ -27,7 +27,7 @@ export class TokenService {
 			issuer: "auth-service",
 			header: {
 				alg: "RS256",
-				kid: Config.JWT_KEY_ID,
+				kid: securityConfig.jwtKeyId,
 			},
 		});
 
@@ -35,14 +35,14 @@ export class TokenService {
 	}
 
 	generateRefreshToken = (payload: JwtPayload) => {
-		const refreshToken = sign(payload, Config.REFRESH_TOKEN_SECRET as string, {
+		const refreshToken = sign(payload, securityConfig.refreshTokenSecret, {
 			algorithm: "HS256",
 			expiresIn: "1y",
 			issuer: "auth-service",
 			jwtid: String(payload.id),
 			header: {
 				alg: "HS256",
-				kid: Config.JWT_KEY_ID,
+				kid: securityConfig.jwtKeyId,
 			},
 		});
 

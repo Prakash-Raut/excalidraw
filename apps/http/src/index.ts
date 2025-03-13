@@ -1,8 +1,8 @@
-import { Config, logger } from "@workspace/common";
+import { appConfig, logger } from "@workspace/common";
 import app from "./app";
 
 const startServer = async () => {
-	const PORT = Config.PORT;
+	const PORT = appConfig.port;
 	try {
 		logger.info("Database connected successfully");
 		app.listen(PORT, () => {

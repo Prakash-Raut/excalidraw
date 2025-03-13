@@ -1,4 +1,5 @@
-import { Config, globalErrorHandler } from "@workspace/common";
+import "@workspace/common";
+import { domainConfig, globalErrorHandler } from "@workspace/common";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { type Express, type Request, type Response } from "express";
@@ -7,7 +8,7 @@ import userRouter from "./routes/user";
 
 const app: Express = express();
 
-const ALLOWED_DOMAINS: string[] = [Config.CLIENT_UI_DOMAIN as string];
+const ALLOWED_DOMAINS: string[] = [domainConfig.clientUi];
 
 app
 	.use(cors({ origin: ALLOWED_DOMAINS, credentials: true }))

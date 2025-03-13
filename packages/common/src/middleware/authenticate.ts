@@ -2,11 +2,11 @@ import type { Request, RequestHandler } from "express";
 import { type GetVerificationKey, expressjwt } from "express-jwt";
 import type { Jwt } from "jsonwebtoken";
 import jwksClient, { type SigningKey } from "jwks-rsa";
-import { Config } from "../config/env";
+import { jwtConfig } from "..";
 import type { AuthCookie } from "../types";
 
 const client = jwksClient({
-	jwksUri: Config.JWKS_URI as string,
+	jwksUri: jwtConfig.jwksUri,
 	cache: true,
 	rateLimit: true,
 	requestHeaders: {}, // Optional

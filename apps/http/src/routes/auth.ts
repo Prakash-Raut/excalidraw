@@ -73,18 +73,4 @@ router.post(
 	},
 );
 
-router.get(
-	"/google",
-	async (req: Request, res: Response, next: NextFunction) => {
-		await authController.initiateGoogleOAuth(req, res, next);
-	},
-);
-
-router.get(
-	"/google/callback",
-	async (req: Request, res: Response, next: NextFunction) => {
-		await authController.handleGoogleOAuthCallback(req, res, next);
-	},
-);
-
 export default router;

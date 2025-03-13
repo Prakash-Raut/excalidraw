@@ -12,6 +12,8 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
+		"@types/config": "^3.3.5",
+		"@types/js-yaml": "^4.0.9",
 		"@workspace/typescript-config": "workspace:*",
 		"husky": "^9.1.7",
 		"lint-staged": "^15.4.3",
@@ -27,6 +29,9 @@
 		"*.{js,jsx,ts,tsx,json,css,scss,md}": [
 			"pnpm check"
 		]
+	},
+	"dependencies": {
+		"config": "^3.3.12",
+		"js-yaml": "^4.1.0"
 	}
 }
-
