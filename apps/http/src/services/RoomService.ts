@@ -16,10 +16,10 @@ export class RoomService {
 		}
 	};
 
-	getOne = async (id: number) => {
+	getOne = async (slug: string) => {
 		try {
 			return await this.prismaClient.room.findUnique({
-				where: { id },
+				where: { slug },
 			});
 		} catch (error) {
 			throw new Error("Failed to fetch room from the database");

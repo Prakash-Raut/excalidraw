@@ -1,3 +1,4 @@
+import type { AuthRequest } from "@workspace/common";
 import { authenticate, logger } from "@workspace/common";
 import type { NextFunction, Request, Response } from "express";
 import { Router } from "express";
@@ -13,11 +14,11 @@ router.post(
 	"/",
 	authenticate,
 	(req: Request, res: Response, next: NextFunction) =>
-		roomController.create(req, res, next),
+		roomController.create(req as AuthRequest, res, next),
 );
 
 router.get(
-	"/:id",
+	"/:slug",
 	authenticate,
 	(req: Request, res: Response, next: NextFunction) =>
 		roomController.getOne(req, res, next),

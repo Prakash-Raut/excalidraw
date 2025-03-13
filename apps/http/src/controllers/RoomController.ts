@@ -32,12 +32,12 @@ export class RoomController {
 	};
 
 	getOne = async (req: Request, res: Response, next: NextFunction) => {
-		const { id: roomId } = req.params;
+		const { slug: roomId } = req.params;
 
 		this.logger.debug("Request for fetching a room", { roomId });
 
 		try {
-			const room = await this.roomService.getOne(Number(roomId));
+			const room = await this.roomService.getOne(roomId);
 
 			if (!room) {
 				return next(createHttpError(404, "Room not found"));
