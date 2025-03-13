@@ -1,10 +1,10 @@
 {
-	"name": "shadcn-ui-monorepo",
+	"name": "excalidraw",
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
 		"build": "turbo build",
-		"dev": "turbo dev",
+		"dev": "cross-env NODE_ENV=development turbo dev",
 		"lint": "pnpm biome lint --write .",
 		"check": "pnpm biome check --write .",
 		"format": "pnpm biome format --write .",
@@ -32,6 +32,7 @@
 	},
 	"dependencies": {
 		"config": "^3.3.12",
+		"cross-env": "^7.0.3",
 		"js-yaml": "^4.1.0"
 	}
 }

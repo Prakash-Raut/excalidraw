@@ -3,9 +3,10 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"build": "tsup",
-		"start": "node dist/index.js",
-		"dev": "tsup --watch --onSuccess \"node dist/index.js\"",
+		"build": "tsc",
+		"start": "tsx src/index.ts",
+		"predev": "pnpm --filter @workspace/common build",
+		"dev": "tsx watch src/index.ts",
 		"lint": "pnpm biome check --write .",
 		"format": "pnpm biome format --write .",
 		"check": "pnpm biome check --write ."
@@ -24,8 +25,7 @@
 		"@types/node": "^20",
 		"@workspace/common": "workspace:*",
 		"@workspace/typescript-config": "workspace:*",
-		"cross-env": "^7.0.3",
-		"tsup": "^8.4.0",
+		"tsx": "^4.19.3",
 		"typescript": "^5.7.3"
 	}
 }

@@ -5,8 +5,12 @@
 		".": "./src/index.ts"
 	},
 	"scripts": {
-		"build": "bunchee",
-		"dev": "bunchee --watch"
+		"build": "tsc",
+		"start": "tsx src/index.ts",
+		"dev": "tsx watch src/index.ts",
+		"lint": "pnpm biome check --write .",
+		"format": "pnpm biome format --write .",
+		"check": "pnpm biome check --write ."
 	},
 	"dependencies": {
 		"express": "^4.21.2",
@@ -20,7 +24,7 @@
 		"@types/http-errors": "^2.0.4",
 		"@types/node": "^20",
 		"@workspace/typescript-config": "workspace:*",
-		"bunchee": "^6.4.0",
+		"tsx": "^4.19.3",
 		"typescript": "^5.8.2"
 	}
 }
