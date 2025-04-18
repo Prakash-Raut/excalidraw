@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"build": "turbo build",
-		"dev": "cross-env NODE_ENV=development turbo dev",
+		"dev": "turbo dev",
 		"lint": "pnpm biome lint --write .",
 		"check": "pnpm biome check --write .",
 		"format": "pnpm biome format --write .",
@@ -29,10 +29,5 @@
 		"*.{js,jsx,ts,tsx,json,css,scss,md}": [
 			"pnpm check"
 		]
-	},
-	"dependencies": {
-		"config": "^3.3.12",
-		"cross-env": "^7.0.3",
-		"js-yaml": "^4.1.0"
 	}
 }

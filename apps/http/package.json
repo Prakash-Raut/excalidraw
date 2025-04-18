@@ -4,9 +4,8 @@
 	"private": true,
 	"scripts": {
 		"build": "tsc",
-		"start": "tsx src/index.ts",
-		"predev": "pnpm --filter @workspace/common build",
-		"dev": "tsx watch src/index.ts",
+		"start": "node dist/index.js",
+		"dev": "tsx watch index.ts",
 		"lint": "pnpm biome check --write .",
 		"format": "pnpm biome format --write .",
 		"check": "pnpm biome check --write ."
@@ -16,12 +15,14 @@
 		"cors": "^2.8.5",
 		"express": "^4.21.2",
 		"http-errors": "^2.0.0",
+		"morgan": "^1.10.0",
 		"uuid": "^11.1.0"
 	},
 	"devDependencies": {
 		"@types/cors": "^2.8.17",
 		"@types/express": "4.17.21",
 		"@types/http-errors": "^2.0.4",
+		"@types/morgan": "^1.9.9",
 		"@types/node": "^20",
 		"@workspace/common": "workspace:*",
 		"@workspace/typescript-config": "workspace:*",

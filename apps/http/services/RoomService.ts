@@ -1,13 +1,16 @@
 import { prisma } from "@workspace/database";
+import { v4 as uuidv4 } from "uuid";
 
 export class RoomService {
-	constructor(private prismaClient = prisma) {}
+	constructor(private db = prisma) {}
 
-	create = async () => {
+	create = async (userId: number) => {
+		const slug = uuidv4();
 		try {
-			const newRoom = await this.prismaClient.room.create({
+			const newRoom = await this.db.room.create({
 				data: {
-					elements: [],
+					slug,
+					userId,
 				},
 			});
 			return newRoom;
@@ -16,9 +19,9 @@ export class RoomService {
 		}
 	};
 
-	join = async (roomId: string) => {
+	join = async (roomId: number) => {
 		try {
-			const room = await this.prismaClient.room.findUnique({
+			const room = await this.db.room.findUnique({
 				where: { id: roomId },
 			});
 			return room;
@@ -27,9 +30,9 @@ export class RoomService {
 		}
 	};
 
-	delete = async (roomId: string) => {
+	delete = async (roomId: number) => {
 		try {
-			return await this.prismaClient.room.delete({
+			return await this.db.room.delete({
 				where: { id: roomId },
 			});
 		} catch (error) {

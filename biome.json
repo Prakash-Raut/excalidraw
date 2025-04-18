@@ -6,7 +6,12 @@
 		"useIgnoreFile": false
 	},
 	"files": {
-		"include": ["apps/**", "packages/**"],
+		"include": [
+			"apps/**/*.ts",
+			"apps/**/*.tsx",
+			"packages/**/*.ts",
+			"packages/**/*.tsx"
+		],
 		"ignoreUnknown": false,
 		"ignore": [
 			"node_modules",
@@ -18,7 +23,8 @@
 			"coverage",
 			"public",
 			"pnpm-lock.yaml",
-			"package-lock.json"
+			"package-lock.json",
+			"generated"
 		]
 	},
 	"formatter": {

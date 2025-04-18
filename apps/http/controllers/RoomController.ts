@@ -10,8 +10,14 @@ export class RoomController {
 	) {}
 
 	create = async (req: Request, res: Response, next: NextFunction) => {
+		const { userId } = req.params;
+
+		if (!userId) {
+			return next(createHttpError(400, "User ID is required"));
+		}
+
 		try {
-			const room = await this.roomService.create();
+			const room = await this.roomService.create(+userId);
 
 			this.logger.info("Room has been created", { id: room.id });
 
@@ -26,8 +32,12 @@ export class RoomController {
 
 		this.logger.debug("Request for fetching a room", { roomId });
 
+		if (!roomId) {
+			return next(createHttpError(400, "Room ID is required"));
+		}
+
 		try {
-			const room = await this.roomService.join(roomId);
+			const room = await this.roomService.join(+roomId);
 
 			if (!room) {
 				return next(createHttpError(404, "Room not found"));
@@ -35,7 +45,7 @@ export class RoomController {
 
 			this.logger.info("Room has been fetched", { roomId });
 
-			res.status(200).json({ id: room.id, elements: room.elements });
+			res.status(200).json({ id: room.id });
 		} catch (error) {
 			next(error);
 		}
@@ -46,8 +56,12 @@ export class RoomController {
 
 		this.logger.debug("Request for deleting a room", { roomId });
 
+		if (!roomId) {
+			return next(createHttpError(400, "Room ID is required"));
+		}
+
 		try {
-			const room = await this.roomService.delete(roomId);
+			const room = await this.roomService.delete(+roomId);
 
 			this.logger.info("Room has been deleted", { roomId });
 

@@ -4,18 +4,19 @@
 	"private": true,
 	"scripts": {
 		"build": "tsc",
-		"start": "tsx src/index.ts",
-		"dev": "tsx watch src/index.ts",
+		"start": "node dist/index.js",
+		"dev": "tsx watch index.ts",
 		"lint": "pnpm biome check --write .",
 		"format": "pnpm biome format --write .",
 		"check": "pnpm biome check --write ."
 	},
 	"dependencies": {
 		"@workspace/database": "workspace:*",
-		"socket.io": "^4.8.1"
+		"ws": "^8.18.1"
 	},
 	"devDependencies": {
 		"@types/node": "^20",
+		"@types/ws": "^8.18.1",
 		"@workspace/common": "workspace:*",
 		"@workspace/typescript-config": "workspace:*",
 		"tsx": "^4.19.3",

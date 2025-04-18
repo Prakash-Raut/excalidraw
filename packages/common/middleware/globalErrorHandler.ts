@@ -1,7 +1,6 @@
 import type { Request, Response } from "express";
 import type { HttpError } from "http-errors";
 import { v4 as uuidv4 } from "uuid";
-import { appConfig } from "..";
 import { logger } from "../config/logger";
 
 export const globalErrorHandler = (
@@ -11,7 +10,7 @@ export const globalErrorHandler = (
 ) => {
 	const errorId = uuidv4();
 	const statusCode = err.statusCode || err.status || 500;
-	const isProduction = appConfig.env === "production";
+	const isProduction = process.env.NODE_ENV === "production";
 	const message = isProduction ? "Internal Server Error" : err.message;
 
 	logger.error(err.message, {
